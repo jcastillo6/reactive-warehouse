@@ -1,0 +1,197 @@
+openapi: 3.0.3
+info:
+  title: Warehouse management app
+  description: >
+    'This is a ***sample warehouse management API***.  You can find out more about Swagger at [swagger.io](http://swagger.io).
+    Description supports markdown markup. For example, you can use the `inline code` using back ticks.'
+  termsOfService: none
+  contact:
+    email: castillo.guerra@gmail.com
+  license:
+    name: MIT
+    url: http:license.com
+  version: 1.0.0
+externalDocs:
+  description: Any document link you want to generate along with API.
+  url: http://swagger.io
+servers:
+  - url: https://warehouse.swagger.io/v2
+tags:
+  - name: warehouse
+    description: Everything about warehouses
+    externalDocs:
+      description: Find out more (extra document link)
+      url: http://swagger.io
+  - name: locators
+    description: Operation about locators
+paths:
+  /api/v1/warehouses:
+    get:
+      tags:
+        - warehouse
+      summary: Returns all the warehouses
+      description: Returns all the warehouse information
+      operationId: getWarehouses
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Warehouse'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Warehouse'
+        404:
+          description: There is not warehouses save in the system
+          content: { }
+
+    post:
+      tags:
+        - warehouse
+      summary: create warehouse
+      description: create new warehouse
+      operationId: createWarehouse
+      requestBody:
+        description: Warehouse object
+        content:
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Warehouse'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Warehouse'
+      responses:
+        201:
+          description: Warehouse added successfully
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Warehouse'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Warehouse'
+
+  /api/v1/warehouses/{warehouseId}:
+    get:
+      tags:
+        - warehouse
+      summary: get the warehouse information
+      description: get the warehouse information by warehouse id
+      operationId: getWarehouseById
+      parameters:
+        - name: warehouseId
+          in: path
+          description: Warehouse Identifier
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Warehouse'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Warehouse'
+        404:
+          description: Given warehouse ID doesn't exist
+          content: {}
+
+  /api/v1/warehouses/{warehouseId}/locators:
+    get:
+      tags:
+        - warehouse
+      summary: Returns the locators of an specific warehouse
+      description: Returns the locators of an specific warehouse
+      operationId: getLocatorsByWarehouseId
+      parameters:
+        - name: warehouseId
+          in: path
+          description: Warehouse Identifier
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Locator'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Locator'
+        404:
+          description: Given Warehouse Id doesn't exist
+          content: {}
+components:
+  schemas:
+    Warehouse:
+      description: Warehouse
+      type: object
+      properties:
+        id:
+          description: unique identifier of the warehouse
+          type: string
+          format: uuid
+        name:
+          description: warehouse name
+          type: string
+        locators:
+          description: locators of the warehouse
+          type: array
+          items:
+            $ref: '#/components/schemas/Locator'
+        address:
+          description: full text address
+          type: string
+    Locator:
+      description: Locator to store products
+      type: object
+      properties:
+        id:
+          description: unique identifier of the locator
+          type: string
+          format: uuid
+        code:
+          description: code of the locator
+          type: string
+        description:
+          description: type product description of the products that can be put inside this location
+          type: string
+        products:
+          description: products in this locator
+          type: array
+          items:
+            $ref: '#/components/schemas/Product'
+    Product:
+      description: Locator to store products
+      type: object
+      properties:
+        name:
+          description: name of the product
+          type: string
+        description:
+          description: description of product
+          type: string
+        price:
+          description: products price
+          type: number
+        quantity:
+          default: quantity this product
+          type: number

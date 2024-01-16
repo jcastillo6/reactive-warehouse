@@ -8,33 +8,32 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.reactive.ReactiveRepresentationModelAssembler;
 import org.springframework.lang.Nullable;
+import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 
-import com.jcastillo.warehouse.model.Warehouse;
-import com.jcastillo6.reactivewarehouse.entity.WarehouseEntity;
-
+import com.jcastillo.warehouse.model.Product;
+import com.jcastillo6.reactivewarehouse.entity.ProductEntity;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public class WarehouseRepresentationModelAssembler implements ReactiveRepresentationModelAssembler<WarehouseEntity, Warehouse>, HateoasSupport {
+@Component
+public class ProductRepresentationModelAssembler implements ReactiveRepresentationModelAssembler<ProductEntity, Product>, HateoasSupport {
     private static String serverUri = null;
 
     @Override
-    public Mono<Warehouse> toModel(WarehouseEntity entity, ServerWebExchange exchange) {
+    public Mono<Product> toModel(ProductEntity entity, ServerWebExchange exchange) {
         return Mono.just(entityToModel(entity, exchange));
     }
 
-    private Warehouse entityToModel(WarehouseEntity entity, ServerWebExchange exchange) {
-        var resource = new Warehouse();
+    private Product entityToModel(ProductEntity entity, ServerWebExchange exchange) {
+        var resource = new Product();
         if (Objects.isNull(entity)) {
             return resource;
         }
         BeanUtils.copyProperties(entity, resource);
-        resource.setId(entity.getId());
         String serverUri = getServerUri(exchange);
-        resource.add(Link.of(String.format("%s/api/v1/addresses", serverUri)).withRel("addresses"));
         resource.add(
-            Link.of(String.format("%s/api/v1/addresses/%s", serverUri, entity.getId())).withSelfRel());
+            Link.of(String.format("%s/api/v1/products/%s", serverUri, entity.getName())).withSelfRel());
         return resource;
     }
 
@@ -45,13 +44,13 @@ public class WarehouseRepresentationModelAssembler implements ReactiveRepresenta
         return serverUri;
     }
 
-    public Warehouse getModel(Mono<Warehouse> m) {
-        AtomicReference<Warehouse> model = new AtomicReference<>();
+    public Product getModel(Mono<Product> m) {
+        AtomicReference<Product> model = new AtomicReference<>();
         m.cache().subscribe(i -> model.set(i));
         return model.get();
     }
 
-    public Flux<Warehouse> toListModel(Flux<WarehouseEntity> entities, ServerWebExchange exchange) {
+    public Flux<Product> toListModel(Flux<ProductEntity> entities, ServerWebExchange exchange) {
         if (Objects.isNull(entities)) {
             return Flux.empty();
         }
