@@ -1,13 +1,13 @@
-package com.jcastillo.warehouse.service;
+package com.jcastillo6.reactivewarehouse.service;
 
-import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 public interface AbstractService<T> {
-    Set<T> findAll();
-    long count();
-    Optional<T> findById(UUID id);
-    T save(T entity);
-    void delete(T entity);
+    Flux<T> findAll();
+    Mono<Long> count();
+    Mono<T> findById(UUID id);
+    Mono<T> save(T entity);
+    Mono<Void> delete(T entity);
 }
