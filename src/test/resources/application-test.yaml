@@ -6,3 +6,5 @@ spring:
       database: warehouse
       username: "${MONGODB_USERNAME}"
       password: "${MONGODB_PASSWORD}"
+logstash:
+  destination: localhost:5002

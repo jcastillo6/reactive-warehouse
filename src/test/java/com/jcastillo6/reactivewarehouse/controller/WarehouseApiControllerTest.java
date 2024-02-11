@@ -5,12 +5,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import com.jcastillo.warehouse.model.Warehouse;
 
 import reactor.core.publisher.Mono;
 
+@ActiveProfiles("test")
 @SpringBootTest(properties = "de.flapdoodle.mongodb.embedded.version=5.0.5")
 @AutoConfigureWebTestClient
 class WarehouseApiControllerTest {
