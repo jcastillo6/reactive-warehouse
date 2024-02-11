@@ -15,10 +15,6 @@ pipeline {
                 '''
          }
      }
-     options {
-        skipStagesAfterUnstable()
-     }
-
      stages{
         stage('Unit testing') {
            steps {
@@ -39,10 +35,10 @@ pipeline {
          }
          stage('Dockerize') {
              steps {
-             echo 'docker'
-                 }
+                echo 'docker'
              }
          }
+
 
          stage('Deploy to Kubernetes') {
              steps {
