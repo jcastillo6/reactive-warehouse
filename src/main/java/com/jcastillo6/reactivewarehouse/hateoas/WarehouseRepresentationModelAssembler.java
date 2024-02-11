@@ -11,10 +11,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import com.jcastillo.warehouse.model.Warehouse;
 import com.jcastillo6.reactivewarehouse.entity.WarehouseEntity;
+import io.micrometer.observation.annotation.Observed;
+import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Component
+@Observed
+@Slf4j
 public class WarehouseRepresentationModelAssembler implements ReactiveRepresentationModelAssembler<WarehouseEntity, Warehouse>, HateoasSupport {
     private static String serverUri = null;
 
@@ -24,7 +28,8 @@ public class WarehouseRepresentationModelAssembler implements ReactiveRepresenta
     }
 
     public Warehouse entityToModel(WarehouseEntity entity, ServerWebExchange exchange) {
-        var resource = new Warehouse();
+        log.info("to entity model");
+        var resource = new Warehouse(entity.getName());
         if (Objects.isNull(entity)) {
             return resource;
         }

@@ -1,4 +1,10 @@
 spring:
+  application:
+    name: reactive-warehouse
+  lifecycle:
+    timeout-per-shutdown-phase: 20s
+  zipkin:
+    enable: true
   data:
     mongodb:
       host: localhost
@@ -6,6 +12,7 @@ spring:
       database: warehouse
       username: "${MONGODB_USERNAME}"
       password: "${MONGODB_PASSWORD}"
+
 server:
   port: 8080
   servlet:
@@ -13,3 +20,29 @@ server:
   compression:
     enabled: true
   address: 0.0.0.0
+  shutdown: graceful
+
+management:
+  metrics:
+    distribution:
+      percentiles-histogram:
+        http:
+          server:
+            requests: true
+  tracing:
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans
+
+logstash:
+  destination: localhost:5002
+
+logging:
+  level:
+    org:
+      springframework:
+        web:
+          servlet:
+            DispatcherServlet: DEBUG

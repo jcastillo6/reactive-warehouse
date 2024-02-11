@@ -66,6 +66,13 @@ dependencies {
     }
     compileOnly 'org.openapitools:jackson-databind-nullable:0.2.1'
 
+    // logging and tracing
+    implementation 'net.logstash.logback:logstash-logback-encoder:7.3'
+    implementation 'io.micrometer:micrometer-tracing-bridge-otel'
+    implementation 'io.opentelemetry:opentelemetry-exporter-zipkin'
+
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
     implementation 'com.fasterxml.jackson.module:jackson-module-jakarta-xmlbind-annotations'
@@ -76,6 +83,7 @@ dependencies {
     testImplementation 'io.projectreactor:reactor-test'
     testImplementation 'io.rest-assured:rest-assured:5.4.0'
     testImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo.spring3x:4.12.0'
+
 }
 
 dependencyManagement {
