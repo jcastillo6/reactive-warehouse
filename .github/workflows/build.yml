@@ -8,7 +8,9 @@
 name: Java CI with Gradle
 
 on:
-
+  push:
+    branches: [ "main" ]
+    
 jobs:
   build:
     runs-on: ubuntu-latest
